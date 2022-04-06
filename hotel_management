@@ -1,0 +1,1056 @@
+/*
+					HOTEL MANAGEMENT SYSTEM
+hotel management project provides hotel details,room booking,guest details,staff management,
+other facilities available and other necessary hotel management features.
+
+-four classes has been made to deal with different operation
+
+*hotel class-to enter and show basic information of hotel 
+*customer class -to enter and show details of guests
+*room class- to check in(other facilities),check out,show information,search rooms
+*staff class-to enter and show basic information of staff members
+
+The program handles file also:
+
+four files has been used
+*hotel.txt-to hold hotel info
+*staff.txt-to hold staff member info
+*room.txt-to hold room and guest info
+*num.txt-to store values of different counters used
+
+*/
+
+#include<iostream>
+#include<fstream>
+#include<string.h>
+#define MAX 10
+
+using namespace std;
+
+
+class hotel
+{
+	protected:
+		 char hotel_name[20],owner_name[20];
+		 int stars,single,doubl,suite,event,single_c,doubl_c,suite_c,event_c;
+	public:
+		void gethotel()			//to get information about hotel
+		{
+			cout<<"*******ENTER INFORMATION OF HOTEL**********"<<endl;
+			cout<<endl<<"NAME:";
+			fflush(stdin);
+        	cin.getline(hotel_name,20);
+        	
+				
+			cout<<endl<<"NAME OF OWNER:";
+			fflush(stdin);
+        	cin.getline(owner_name,20);
+				
+			cout<<endl<<"STARS:";
+			cin>>stars;
+			
+			cout<<endl<<"*******ENTER INFORMATION OF ROOMS**********";
+			
+			cout<<endl<<"ENTER NUMBER OF ROOMS AVAILABLE AND PRICE OF SINGLE BED ROOM:";
+			cin>>single>>single_c;
+			
+			cout<<endl<<"ENTER NUMBER OF ROOMS AVAILABLE AND PRICE OF DOUBLE BED AC ROOM:";
+			cin>>doubl>>doubl_c;
+			
+			cout<<endl<<"ENTER NUMBER OF ROOMS AVAILABLE AND PRICE OF LUXIRIOUS SUITE:";
+			cin>>suite>>suite_c;
+			
+			cout<<endl<<"ENTER NUMBER OF AVAILABLE EVENT HALLS AND PRICE OF EVENT HALLS:";
+			cin>>event>>event_c;
+				
+		}
+		
+		void show_hotel()		//to show information of hotel
+		{
+			cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "<<endl;
+			cout<<"************HOTEL INFORMATION***************"<<endl;
+			cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "<<endl;
+			cout<<"HOTEL NAME:"<<hotel_name<<endl;
+			cout<<"OWNER NAME:"<<owner_name<<endl;
+			cout<<"STARS:"<<stars<<endl;
+			cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "<<endl;
+			cout<<"************ROOM INFORMATION***************"<<endl;
+			cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "<<endl;
+			cout<<"SINGLE BED ROOM:"<<single<<endl;
+			cout<<"PRICE:"<<single_c<<"/-"<<endl;
+			cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "<<endl;
+			cout<<"DOUBLE BED ROOM:"<<doubl<<endl;
+			cout<<"PRICE:"<<doubl_c<<"/-"<<endl;
+			cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "<<endl;
+			cout<<"LUXIROUS SUITE:"<<suite<<endl;
+			cout<<"PRICE:"<<suite_c<<"/-"<<endl;
+			cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "<<endl;
+			cout<<"EVENT HALL:"<<event<<endl;
+			cout<<"PRICE:"<<event_c<<"/-"<<endl;
+			cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "<<endl;
+			cout<<"OTHER FACILITIES"<<endl;
+			cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "<<endl;
+			cout<<"1.RESTAURANT:1000/-"<<endl<<"2.NIGHT CLUB:2000/-"<<endl<<"3.GAMING ZONE:1500/-"<<endl;
+			cout<<"4.SWIMMING POOL/JACUZZI:500/-"<<endl<<"5.SPA:500/-"<<endl<<"6.WIFI:200/-"<<endl;
+			cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "<<endl;
+		}
+		
+};
+
+class customer
+{
+	protected:
+		char cust_name[20];
+		int num_guest,cust_contact,cust_id;	
+	public:
+		void get_cust()						//to get personal information about guest
+		{
+			cout<<"************GUEST INFORMATION***************"<<endl;
+			
+			cout<<"ENTER NAME OF GUEST"<<endl;
+			fflush(stdin);
+        	cin.getline(cust_name,20);
+        	
+			cout<<"ENTER ID NUMBER(adhaar/passport/pancard):"<<endl;
+			cin>>cust_id;
+			
+			cout<<"ENTER CONTACT NUMBER OF GUEST:"<<endl;
+			cin>>cust_contact;
+			
+			cout<<"ENTER NUMBER OF PEOPLE WITH GUEST:"<<endl;
+			cin>>num_guest;
+			
+		}
+		
+		void show_cust()				//to show personal info of guest
+		{
+			cout<<"************CUSTOMER INFORMATION***************"<<endl;
+			
+			cout<<"NAME OF GUEST: "<<cust_name<<endl;
+			cout<<"ID NUMBER(adhaar/passport/pancard):"<<cust_contact<<endl;
+			cout<<"CONTACT NUMBER OF GUEST: "<<cust_contact<<endl;
+			cout<<"NUMBER OF PEOPLE WITH GUEST: "<<num_guest<<endl;
+		}
+		
+	
+};
+
+/*
+this program deals with four types of rooms
+single room
+double room
+suite 
+event hall
+*/
+class room:public hotel,public customer
+{
+	protected:
+		
+		char checkin_date[15],checkout_date[15],event_purpose[50],room_type[10];
+		char checkin_time[10],checkout_time[10];
+		char restaurant[4],club[4],gz[4],swim[4],spa[4],wifi[4];
+		int amount,famt,num_days,rnm,room_no;
+		
+	public:
+		void init()					//to initialize those data member whose values is not initialized in check in
+		{
+		
+			strcpy(checkout_date,"N/A");
+			strcpy(event_purpose,"N/A");
+			strcpy(checkout_time,"N/A");
+			strcpy(restaurant,"NO");
+			strcpy(club,"NO");	
+			strcpy(gz,"NO");
+			strcpy(swim,"NO");
+			strcpy(spa,"NO");
+			strcpy(wifi,"NO");
+			amount=0;
+			famt=0;
+			num_days=0;
+		}
+		void check_in(int choice,int no[],int count)		//this function calculates room number and other room details
+		{
+			get_cust();
+			int flag=1;
+			switch(choice)
+			{
+				case 1:
+						if(count>=single)
+						{
+							cout<<"SORRY,SINGLE ROOM NOT AVAILABLE"<<endl;
+							flag=0;
+						}
+							
+						else if(num_guest>=2)
+						{
+							cout<<"SORRY,SINGLE ROOM NOT AVAILABLE FOR MORE THAN ONE GUEST.CHOOSE FROM OTHER ROOM OPTIONS."<<endl;
+							flag=0;
+							
+						}
+							
+						else
+						{
+							for(int i=1;i<=single;i++)
+							{
+								if(no[i]==0)
+								{
+									room_no=i;
+									rnm=1;
+									strcpy(room_type,"SINGLE");
+									no[i]=1;
+									count++;
+									break;
+								}
+							}
+							
+						}							
+						break;
+				case 2:
+						if(count>=doubl)
+						{
+							cout<<"SORRY,DOUBLE ROOM NOT AVAILABLE"<<endl;
+							flag=0;
+						}
+							
+						else if(num_guest>=3)
+						{
+							cout<<"SORRY,DOUBLE ROOM NOT AVAILABLE FOR MORE THAN TWO GUEST.CHOOSE FROM OTHER ROOM OPTIONS."<<endl;
+							flag=0;
+						}
+							
+						else
+						{
+							for(int i=1;i<=doubl;i++)
+							{
+								if(no[i]==0)
+								{
+									room_no=i;
+									rnm=2;
+									strcpy(room_type,"DOUBLE");
+									no[i]=1;
+									count++;
+									break;
+								}
+							}
+							
+							
+						}						
+					break;
+					
+				case 3:
+						if(count>=suite)
+						{
+							cout<<"SORRY,SUITE ROOM NOT AVAILABLE"<<endl;
+							flag=0;
+						}
+							
+						else
+						{
+							for(int i=1;i<=suite;i++)
+							{
+								if(no[i]==0)
+								{
+									room_no=i;
+									rnm=3;
+									strcpy(room_type,"SUITE");
+									no[i]=1;
+									count++;
+									break;
+								}
+							}
+							
+						}			
+					break;
+				case 4:
+						if(count>=event)
+						{
+							cout<<"SORRY,EVENT HALLS NOT AVAILABLE"<<endl;
+							flag=0;
+						}
+							
+						else
+						{
+							for(int i=1;i<=event;i++)
+							{
+								if(no[i]==0)
+								{
+									room_no=i;
+									rnm=4;
+									strcpy(room_type,"EVENT HALL");
+									no[i]=1;
+									count++;
+									break;
+								}
+							}
+							
+							
+						}			
+					break;
+			}
+			if(flag!=0)
+			{
+				cout<<"ENTER CHECK IN DATE IN DD/MM/YYYY:"<<endl;
+				fflush(stdin);
+	        	cin.getline(checkin_date,15);
+	        	
+	        	cout<<"ENTER CHECK IN TIME IN HH:MM"<<endl;
+	        	fflush(stdin);
+	        	cin.getline(checkin_time,10);
+	        	
+	        	if(choice==4)
+	        	{
+	        		cout<<"ENTER PURPOSE OF EVENT IN BRIEF"<<endl;
+	        		fflush(stdin);
+	        		cin.getline(event_purpose,50);
+				}	
+			}
+			if(flag!=0)
+			{
+				int c1,c;
+			
+				do
+				{
+					cout<<"ENTER"<<endl;
+					cout<<"1.RESTAURANT:1000/-"<<endl<<"2.NIGHT CLUB:2000/-"<<endl<<"3.GAMING ZONE:1500/-"<<endl;
+					cout<<"4.SWIMMING POOL/JACUZZI:500/-"<<endl<<"5.SPA:500/-"<<endl<<"6.WIFI:200/-"<<endl<<"7.NONE";
+					cin>>c1;
+					
+					if(c1==1)
+					{
+						strcpy(restaurant,"YES");
+						famt=famt+1000;	
+					}
+					else if(c1==2)
+					{
+						strcpy(club,"YES");
+						famt=famt+2000;	
+					}
+					else if(c1==3)
+					{
+						strcpy(gz,"YES");
+						famt=famt+1500;
+					}
+					else if(c1==4)
+					{
+						strcpy(swim,"YES");
+						famt=famt+500;
+					}
+					else if(c1==5)
+					{
+						strcpy(spa,"YES");
+						famt=famt+500;
+					}
+					else if(c1==6)
+					{
+						strcpy(wifi,"YES");
+						famt=famt+200;
+					}
+					else if(c1==7)
+					{
+						
+					}
+					else
+						cout<<"WRONG CHOICE"<<endl;
+							
+					cout<<"ENTER 1.FOR MORE FACILITIES 0.EXIT"<<endl;
+					cin>>c;
+					
+				}while(c==1);
+					
+			}
+			
+		}
+		//to handle check out of a guest.this funtion does this updations required
+		void check_out(int choice,int r,int no[],int count)	
+		{
+			
+			cout<<"ENTER CHECK IN DATE IN DD/MM/YYYY:"<<endl;
+			fflush(stdin);
+        	cin.getline(checkout_date,15);
+        	
+        	cout<<"ENTER CHECK IN TIME IN HH:MM"<<endl;
+        	fflush(stdin);
+        	cin.getline(checkout_time,10);
+        	
+        	cout<<"ENTER NUMBER OF DAYS OF STAY:FROM "<<checkin_date<<" TO "<<checkout_date<<endl;
+        	cin>>num_days;
+        
+        	
+			switch(choice)
+			{
+				case 1:
+						if(r>=single)
+							cout<<"YOU HAVE ENTERED WRONG ROOM NUMBER"<<endl;
+						no[r]=0;
+						count--;
+						amount= (single_c+famt)*num_days;
+						
+						break;
+				case 2:
+						if(r>=doubl)
+							cout<<"YOU HAVE ENTERED WRONG ROOM NUMBER"<<endl;
+						no[r]=0;
+						count--;
+						amount= (doubl_c+famt)*num_days;
+						break;
+				case 3:
+						if(r>=suite)
+							cout<<"YOU HAVE ENTERED WRONG ROOM NUMBER"<<endl;
+						no[r]=0;
+						count--;
+						amount= (suite_c+famt)*num_days;
+						break;
+				case 4:
+						if(r>=event)
+							cout<<"YOU HAVE ENTERED WRONG ROOM NUMBER"<<endl;
+						no[r]=0;
+						count--;
+						amount= (event_c+famt)*num_days;
+						
+					  	break;
+			}
+			
+		}
+		
+		void show_room()		//to show the info of room along with personal info of guest
+		{
+			show_cust();
+			cout<<"********ROOM INFORMATION********"<<endl;
+			cout<<"ROOM NUMBER: "<<room_no<<endl;
+			cout<<"ROOM TYPE: "<<room_type<<endl;
+			
+			cout<<"OTHER FACILITIES"<<endl;
+			cout<<"RESTAURANT: "<<restaurant<<endl;
+			cout<<"NIGHT CLUB: "<<club<<endl;
+			cout<<"SWIMMING POOL/JACUZZI: "<<swim<<endl;
+			cout<<"SPA: "<<spa<<endl;
+			cout<<"GAMING ZONE: "<<gz<<endl;
+			cout<<"WIFI: "<<wifi<<endl;
+			
+			
+			if(strcmp(event_purpose,"N/A")!=0)
+				cout<<"PURPOSE OF EVENT: "<<event_purpose<<endl;
+				
+			cout<<"CHECK IN DATE: "<<checkin_date<<endl;
+			cout<<"CHECK IN TIME: "<<checkin_time<<endl;
+			cout<<"CHECK OUT DATE: "<<checkout_date<<endl;
+			cout<<"CHECK OUT TIME: "<<checkout_time<<endl;
+			
+			if(amount!=0)
+			{
+				cout<<"AMOUNT TO PAY: "<<amount+famt<<endl;
+			}
+			cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _"<<endl;
+		}
+		
+		friend int search(room s[],int r,int t,int n)		//search on the basis of room number and room type
+		{													//rnm-room type(1.single,2.double,3.suite,4.event
+			for(int i=0;i<n;i++)
+			{
+				if(s[i].room_no==r && s[i].rnm==t )
+					return i;
+					
+				return -1;
+			}
+		}	
+		
+};
+
+class staff:public hotel
+{
+	protected:
+		char staff_name[20],post[40],date_join[15];
+		int salary,age,sid;
+		
+	public:
+		
+		void get_staff()				//to get info of staff members
+		{
+			int choice;
+			
+			cout<<"********STAFF MEMBER INFORMATION********"<<endl;
+			
+			cout<<"ENTER STAFF ID: "<<endl;
+			cin>>sid;
+			cout<<"ENTER NAME OF STAFF MEMBER:"<<endl;
+			fflush(stdin);
+        	cin.getline(staff_name,20);
+        	do
+			{
+				cout<<"ENTER POST/DUTY OF STAFF MEMBER:"<<endl;
+				cout<<"ENTER"<<endl<<"1.GENERAL MANAGER"<<endl<<"2.ASSISTANT GENERAL MANAGER"<<endl<<"3.FRONT OFFICE MANAGER"<<endl<<"4.CONCIERGE"<<endl;
+				cout<<"5.GUEST SERVICE AGENT "<<endl<<"6.SECURITY"<<endl<<"7.BELLMAN"<<endl<<"8.HOUSEKEEPER"<<endl<<"9.CHIEF MAINTAINANCE ENGINEER"<<endl<<"10.CHEF"<<endl<<"11.SERVER"<<endl;
+				cin>>choice;
+				if(choice>11|| choice<=0)
+					cout<<"WRONG CHOICE,ENTER AGAIN"<<endl;
+						
+			}while(choice>11|| choice<=0);
+			
+			if(choice==1)
+				strcpy(post,"GENERAL MANAGER");
+			else if(choice==2)
+				strcpy(post,"ASSISTANT GENERAL MANAGER");
+			else if(choice==3)
+				strcpy(post,"FRONT OFFICE MANAGER");
+			else if(choice==4)
+				strcpy(post,"CONCIERGE");
+			else if(choice==5)
+				strcpy(post,"GUEST SERVICE AGENT");
+			else if(choice==6)
+				strcpy(post,"SECURITY");
+			else if(choice==7)
+				strcpy(post,"BELLMAN");
+			else if(choice==8)
+				strcpy(post,"HOUSEKEEPER");
+			else if(choice==9)
+				strcpy(post,"CHIEF MAINTAINANCE ENGINEER");
+			else if(choice==10)
+				strcpy(post,"CHEF");
+			else if(choice==11)
+				strcpy(post,"SERVER");
+			else
+				strcpy(post,"NOT SPECIFIED");
+				
+			cout<<"ENTER AGE OF STAFF MEMBER:"<<endl;
+			cin>>age;
+			
+			cout<<"ENTER SALARY OF STAFF MEMBER :"<<endl;
+			cin>>salary;
+			
+			cout<<"ENTER DATE OF JOINING OF STAFF MEMBER(dd/mm/yyyy) :"<<endl;
+			fflush(stdin);
+        	cin.getline(date_join,15);
+		
+		}
+		
+		void show_staff()						//to show info of staff members
+		{
+			cout<<"********STAFF MEMBER INFORMATION********"<<endl;
+			
+			cout<<"STAFF ID: "<<sid<<endl;
+			cout<<"NAME: "<<staff_name<<endl;
+			cout<<"POST/DUTY : "<<post<<endl;
+			cout<<"AGE: "<<age<<endl;
+			cout<<"JOINING DATE :"<<date_join<<endl;
+			cout<<"SALARY: "<<salary<<"/-"<<endl;
+			
+		}	
+		
+		friend int search_staff(staff s[],int r,int n)		//search on the basis of staff id
+		{
+			for(int i=0;i<n;i++)
+			{
+				if(s[i].sid==r)
+					return i;
+					
+				return -1;
+			}
+		}	
+};
+
+//arrays for different room type- 1 if particular room occupied otherwise 0
+static int single_no[MAX]={0},doubl_no[MAX]={0},suite_no[MAX]={0},event_no[MAX]={0}; 
+//counters to hold number of rooms being occupied of particular type
+static int single_count=0,doubl_count=0,suite_count=0,event_count=0;
+static int rm=0,sm=0;		
+hotel h,K;
+room r,L,R[100];
+staff s,T,S[100];
+void Createfile(int choice);
+void Writefile(int choice);
+void Readfile(int choice);
+int Searchfile(int choice);
+void Deletefile(int choice);
+void getnum();
+void storenum();
+int main()
+{
+	int cr;
+	getnum();
+	do
+	{
+		cout<<"ENTER"<<endl<<"1.RELATED TO HOTEL"<<endl<<"2.RELATED TO ROOM"<<endl<<"3.RELATED TO STAFF MEMBERS"<<endl<<"4.EXIT"<<endl;
+		cin>>cr;
+		
+		if(cr==1)
+		{
+			int choice;
+			do
+			{
+				cout<<"ENTER"<<endl<<"1.TO ENTER INFORMATION OF HOTEL"<<endl<<"2.TO RETRIVE INFORMATION ABOUT HOTEL"<<endl<<"3.EXIT"<<endl;
+				cin>>choice;
+				
+				switch(choice)
+				{
+					case 1:Writefile(cr);
+						break;
+					case 2:Readfile(cr);
+						break;
+					case 3:
+						break;
+					default:cout<<"invalid choice"<<endl;
+						break;
+				}
+			}while(choice!=3);
+			
+		}
+		else if(cr==2)
+		{
+			int choice;
+			do
+			{
+				cout<<"ENTER"<<endl<<"1.TO CHECK IN"<<endl<<"2.TO CHECK OUT"<<endl<<"3.TO SEARCH INFORMATION OF A PARTICULAR GUEST"<<endl<<"4.TO SHOW INFORMATION ABOUT ALL GUEST"<<endl<<"5.TO ERASE DATA OF ALL GUEST"<<endl<<"6.EXIT"<<endl;
+				cin>>choice;
+				
+				switch(choice)
+				{
+					case 1:Writefile(cr);
+						break;
+					case 2:Deletefile(cr);
+						break;
+					case 3:Searchfile(cr);
+						break;
+					case 4:Readfile(cr);
+						break;
+					case 5:Createfile(cr);
+						break;
+					case 6:
+						break;
+					default:cout<<"invalid choice"<<endl;
+						break;
+				}
+			}while(choice!=6);
+		}
+		else if(cr==3)
+		{
+			int choice;
+			do
+			{
+				cout<<"ENTER"<<endl<<"1.TO ENTER INFORMATION OF A STAFF MEMBER"<<endl<<"2.TO SHOW INFORMATION OF ALL STAFF MEMBERS"<<endl<<"3.TO SEARCH INFORMATION OF A PARTICULAR STAFF MEMBER"<<endl<<"4.TO DELETE INFORMATION ABOUT PARTICULAR STAFF MEMBER"<<endl<<"5.TO ERASE DATA OF ALL STAFF MEMBER"<<endl<<"6.EXIT"<<endl;
+				cin>>choice;
+				
+				switch(choice)
+				{
+					case 1:Writefile(cr);
+						break;
+					case 2:Readfile(cr);
+						break;
+					case 3:Searchfile(cr);
+						break;
+					case 4:Deletefile(cr);
+						break;
+					case 5:Createfile(cr);
+						break;
+					case 6:
+						break;
+					default:cout<<"invalid choice"<<endl;
+						break;
+				}
+			}while(choice!=6);
+			
+		}
+		else
+			cout<<"EXITING"<<endl;
+			
+	}while(cr!=4);
+	
+	storenum();
+	
+	return 0;
+	
+}
+/*
+functions for file handling
+these functions has an argument choice
+the choice is:
+1.hotel related
+2.room related
+3.staff related
+*/
+void Createfile(int choice)			//to create a file and also when want to erase all data from file
+{
+	ofstream F;
+	if(choice==1)
+		F.open("hotel.txt");
+	else if(choice==2)
+		F.open("room.txt");
+	else if(choice==3)
+		F.open("staff.txt");
+		
+	else
+		F.open("num.txt");
+	
+	F.close();
+}
+
+void Writefile(int choice)			//to input info into repective files
+{
+	fstream F;
+	
+	if(choice==1)
+	{
+		F.open("hotel.txt",ios::app);
+		if (F.fail())
+		{
+			cout<<"Unable to open file hotel";
+		}
+		else
+		{
+			Createfile(1);
+			F.seekp(0,ios::end);
+			h.gethotel();
+			F.write((char *) &h, sizeof(h));
+		}
+	}
+	else if(choice==2)
+	{
+		F.open("room.txt",ios::app);
+		if (F.fail())
+		{
+			cout<<"Unable to open file room";
+		}
+		else
+		{
+			int t;
+			cout<<"ENTER 1.SINGLE ROOM 2.DOUBLE ROOM 3.SUITE 4.EVENT HALL"<<endl;
+			cin>>t;
+			rm=rm+1;
+			F.seekp(0,ios::end);
+			fstream F1;
+			
+			F1.open("hotel.txt",ios::in);
+			if (F1.fail())
+			{
+				cout<<"Unable to open hotel file";
+			}
+			else
+			{
+				F1.seekg(0);
+				F1.read((char *) &r, sizeof(r));
+				
+			}
+			r.init();
+			
+			if(t==1)
+				r.check_in(t,single_no,single_count);
+			else if(t==2)
+				r.check_in(t,doubl_no,doubl_count);
+			else if(t==3)
+				r.check_in(t,suite_no,suite_count);
+			else 
+				r.check_in(t,event_no,event_count);
+			
+				
+				F.write((char *) &r, sizeof(r));
+				r.show_room();
+
+			F1.close();
+		}
+		
+	}
+	else
+	{
+		F.open("staff.txt",ios::app);
+		if (F.fail())
+		{
+			cout<<"Unable to open staff file ";
+		}
+		else
+		{
+			sm=sm+1;
+			F.seekp(0,ios::end);
+			fstream F1;
+			F1.open("hotel.txt",ios::in);
+			if (F1.fail())
+			{
+				cout<<"Unable to open hotel file";
+			}
+			else
+			{
+				F1.seekg(0);
+				F1.read((char *) &s, sizeof(s));
+			}
+			s.get_staff();
+			F.write((char *) &s, sizeof(s));
+			F1.close();
+		}
+	}
+	
+	F.close();
+}
+
+void Readfile(int choice)			//to retreive info from respective files and show them 
+{
+	fstream F;
+	if(choice==1)
+	{
+		F.open("hotel.txt",ios::in);
+		if (F.fail())
+		{
+			cout<<"Unable to open hotel file";
+		}
+		else
+		{
+			F.seekg(0);
+			F.read((char *) &K, sizeof(K));
+			K.show_hotel();
+		}
+	}
+	else if(choice==2)
+	{
+		F.open("room.txt",ios::in);
+		if (F.fail())
+		{
+			cout<<"Unable to open file";
+		}
+		else
+		{
+			F.seekg(0);
+			
+				for(int i=0;i<=rm;i++)
+				{
+					F.read((char *) &L, sizeof(L));
+					L.show_room();
+				}
+			}
+	}
+	else
+	{
+		F.open("staff.txt",ios::in);
+		if (F.fail())
+		{
+			cout<<"Unable to open staff file";
+		}
+		else
+		{
+			F.seekg(0);
+			for(int i=0;i<=sm;i++)
+			{
+				F.read((char *) &T, sizeof(T));
+				T.show_staff();
+			}
+				
+		}	
+	}
+	
+	F.close();
+}
+
+int Searchfile(int choice)			//to search object from file and show asked info if found
+{
+	int k,t,j=0,m;
+	fstream F;
+	if(choice==2)
+	{
+		cout<<"ENTER ROOM NUMBER TO SEARCH:"<<endl;
+		cin>>k;
+		cout<<"ENTER 1.SINGLE ROOM 2.DOUBLE ROOM 3.SUITE 4.EVENT HALL"<<endl;
+		cin>>t;
+		
+		F.open("room.txt",ios::in);
+		if (F.fail())
+			cout<<"Unable to open room file"<<endl;
+		else
+		{
+			F.seekg(0);
+			for(int i=0;i<=rm;i++)
+			{
+				F.read((char *) &L, sizeof(L));
+				R[j++]=L; 
+			}
+			
+			m=search(R,k,t,rm);
+			if (m!=-1)
+				R[m].show_room();
+		}	
+	}
+	else 
+	{
+		cout<<"ENTER STAFF ID OF STAFF MEMBER TO SEARCH:";
+		cin>>k;
+		F.open("staff.txt",ios::in);
+		if (F.fail())
+			cout<<"Unable to open staff file";
+		else
+		{
+			F.seekg(0);
+			for(int i=0;i<=sm;i++)
+			{
+				F.read((char *) &T, sizeof(T));
+				S[j++]=T;  
+			}
+			m=search_staff(S,k,sm);
+			if (m!=-1)
+				S[m].show_staff();
+		}	
+	}
+	
+	return m;
+	F.close();
+}
+void Deletefile(int choice)				//to delete the particular info from respective files
+{										//check out is also dealt here for room file
+	fstream F;
+	int k,t,j=0;
+	
+	if(choice==2)
+	{
+		F.open("room.txt",ios::in);
+		if (F.fail())
+			cout<<"Unable to open room file"<<endl;
+		else
+		{
+			int m=Searchfile(choice);
+			if(m!=-1)
+			{
+				cout<<"RECORD FOUND"<<endl;
+				cout<<"ENTER ROOM NUMBER AGAIN"<<endl;
+				cin>>k;
+				cout<<"ENTER 1.SINGLE ROOM 2.DOUBLE ROOM 3.SUITE 4.EVENT HALL"<<endl;
+				cin>>t;
+				r.check_out(t,k,single_no,single_count);
+				r.show_room();
+				
+				F.seekg(0);
+				for(int i=0;i<=rm;i++)
+				{
+					F.read((char *) &L, sizeof(L));
+					R[j++]=L; 
+				}
+				for(int i=m;i<=rm;i++)
+				{
+					R[i]=R[i+1];
+				}
+				rm=rm-1;
+				F.close();
+				F.open("room.txt",ios::out);
+				if (F.fail())
+				{
+					cout<<"Unable to open room file";
+				}
+				else
+					for(int i=0;i<rm;i++)
+						F.write((char *) &R[i], sizeof(R[i]));
+			}
+			else
+				cout<<"DOES NOT EXIST"<<endl;
+		}
+	}
+	else
+	{
+		F.open("staff.txt",ios::in);
+		if (F.fail())
+			cout<<"Unable to open room file"<<endl;
+		else
+		{
+			int m=Searchfile(choice);
+			if(m!=-1)
+			{
+				cout<<"RECORD FOUND"<<endl;
+				
+				F.seekg(0);
+				for(int i=0;i<=sm;i++)
+				{
+					F.read((char *) &T, sizeof(T));
+					S[j++]=T; 
+				}
+				for(int i=m;i<=sm;i++)
+				{
+					S[i]=S[i+1];
+				}
+				sm=sm-1;
+				F.close();
+				F.open("staff.txt",ios::out);
+				if (F.fail())
+				{
+					cout<<"Unable to open staff file";
+				}
+				else
+					for(int i=0;i<=sm;i++)
+						F.write((char *) &S[i], sizeof(S[i]));
+			}
+			else
+				cout<<"DOES NOT EXIST"<<endl;
+		}
+	}
+	F.close();
+}
+void storenum()			//stores counter into file
+{
+	ofstream O;
+	O.open("num.txt");
+	if (O.fail())
+	{
+		cout<<"unable to open the file num"<<endl;
+		exit(0);
+	}
+	else
+	{
+		O<<single_count;
+		O<<'\t';
+		O<<doubl_count;
+		O<<'\t';
+		O<<suite_count;
+		O<<'\t';
+		O<<event_count;
+		O<<'\t';
+		//O<<rm;
+		//O<<'\t';
+		//O<<sm;
+		//O<<'\t';
+		for(int i=0;i<MAX;i++)
+		{
+			O<<single_no[i];
+			O<<'\t';
+		}
+		for(int i=0;i<MAX;i++)
+		{
+			O<<doubl_no[i];
+			O<<'\t';
+		}
+		for(int i=0;i<MAX;i++)
+		{
+			O<<suite_no[i];
+			O<<'\t';
+		}
+		for(int i=0;i<MAX;i++)
+		{
+			O<<event_no[i];
+			O<<'\t';
+		}	
+		O.close();
+	}
+}
+
+void getnum()			//retrives counters from file
+{
+	ifstream In;
+	
+	In.open("num.txt");
+	if (In.fail())
+	{
+		cout<<"unable to open the file num"<<endl;
+		exit(0);
+	}
+	else
+	{
+		In>>single_count;
+		In>>doubl_count;
+		In>>suite_count;
+		In>>event_count;
+		//In>>rm;
+		//In>>sm;
+		for(int i=0;i<MAX;i++)
+			In>>single_no[i];
+		for(int i=0;i<MAX;i++)
+			In>>doubl_no[i];
+		for(int i=0;i<MAX;i++)
+			In>>suite_no[i];
+		for(int i=0;i<MAX;i++)
+			In>>event_no[i];	
+		
+		In.close();
+	}
+}
+
+
